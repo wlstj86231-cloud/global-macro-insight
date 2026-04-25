@@ -1,0 +1,29 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: #faf8f3; --foreground: #1a1710;
+  --card: #ffffff; --primary: #1a1710;
+  --primary-foreground: #faf8f3;
+  --secondary: #f0ebe0; --muted: #f0ebe0;
+  --muted-foreground: #7a7060;
+  --accent: #f0ebe0; --border: rgba(26,23,16,0.12);
+  --gold: #b8962e; --gold-muted: #f0e4b8;
+  --radius: 0.5rem; --font-serif: 'Nanum Myeongjo', serif;
+}
+.dark {
+  --background: #0e0d0b; --foreground: #f0ebe0;
+  --primary: #d4b04a; --gold: #d4b04a;
+}
+@layer base {
+  * { @apply border-border; }
+  body { @apply bg-background text-foreground; }
+}
+@keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+.ticker-animate { animation: ticker 35s linear infinite; }
+.premium-blur::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 240px; background: linear-gradient(to bottom, transparent, var(--background)); pointer-events: none; }
+.article-body { font-family: var(--font-serif); font-size: 1.0625rem; line-height: 1.85; }
+.insight-card { background: var(--gold-muted); border-left: 3px solid var(--gold); }
