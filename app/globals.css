@@ -1,6 +1,5 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -19,8 +18,8 @@
   --primary: #d4b04a; --gold: #d4b04a;
 }
 @layer base {
-  * { @apply border-border; }
-  body { @apply bg-background text-foreground; }
+  * { border-color: rgba(26,23,16,0.12); }
+  body { background-color: var(--background); color: var(--foreground); }
 }
 @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 .ticker-animate { animation: ticker 35s linear infinite; }
