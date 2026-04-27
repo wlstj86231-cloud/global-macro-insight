@@ -1,12 +1,21 @@
 "use client"
-import { Checkbox as CheckboxPrimitive } from "@base-ui/react/checkbox"
+import * as React from "react"
 import { cn } from "@/lib/utils"
-import { CheckIcon } from "lucide-react"
-function Checkbox({ className, ...props }: CheckboxPrimitive.Root.Props) {
+import { Check } from "lucide-react"
+interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  onCheckedChange?: (checked: boolean) => void
+}
+function Checkbox({ className, onCheckedChange, onChange, checked, ...props }: CheckboxProps) {
   return (
-    <CheckboxPrimitive.Root data-slot="checkbox" className={cn("flex size-4 items-center justify-center rounded border border-input data-checked:bg-primary data-checked:text-primary-foreground",className)} {...props}>
-      <CheckboxPrimitive.Indicator className="grid place-content-center"><CheckIcon size={12}/></CheckboxPrimitive.Indicator>
-    </CheckboxPrimitive.Root>
+    <div
+      data-slot="checkbox"
+      className={cn("flex size-4 cursor-pointer items-center justify-center rounded border border-input", className)}
+      style={{background: checked ? 'var(--primary)' : 'transparent'}}
+      onClick={() => onCheckedChange?.(!checked)}
+    >
+      {checked && <Check size={12} style={{color:'var(--primary-foreground)'}}/>}
+      <input type="checkbox" className="sr-only" checked={checked} readOnly {...props}/>
+    </div>
   )
 }
 export { Checkbox }
