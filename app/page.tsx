@@ -2,30 +2,32 @@ import { getArticles } from "@/actions/getArticles";
 import { ArticleCard } from "@/components/ui/ArticleCard";
 import Link from "next/link";
 
-export default async function Home({ searchParams }: { searchParams: Promise<{ filter?: string }> }) {
+export const revalidate = 60;
+
+export default async function Home({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
   let articles: any[] = [];
   try {
-    const { filter } = await searchParams;
-    articles = await getArticles(filter);
+    const { category } = await searchParams;
+    articles = await getArticles(category);
   } catch (e) {
-    console.error("Failed to fetch articles:", e);
+    console.error("articles fetch error:", e);
   }
   return (
     <div className="container max-w-7xl mx-auto px-4 py-8">
-      <div className="flex items-center gap-4 mb-6">
-        <Link href="/" className={`text-sm px-3 py-1 rounded-full border ${!new URLSearchParams().has("filter") ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : ""}`}>All</Link>
-        <Link href="/?filter=premium" className="text-sm px-3 py-1 rounded-full border">PRO</Link>
-        <Link href="/?filter=free" className="text-sm px-3 py-1 rounded-full border">Free</Link>
+      <div className="flex items-center gap-3 mb-6 border-b pb-4">
+        <Link href="/" className="text-sm font-medium px-3 py-1.5 rounded-full bg-[var(--primary)] text-[var(--primary-foreground)]">전체</Link>
+        <Link href="/?category=market" className="text-sm font-medium px-3 py-1.5 rounded-full border hover:bg-muted">시장</Link>
+        <Link href="/?category=macro" className="text-sm font-medium px-3 py-1.5 rounded-full border hover:bg-muted">거시경제</Link>
+        <Link href="/?category=korea" className="text-sm font-medium px-3 py-1.5 rounded-full border hover:bg-muted">한국</Link>
       </div>
       {articles.length === 0 ? (
         <div className="text-center py-20 text-muted-foreground">
-          <p className="text-lg">No articles yet.</p>
-          <p className="text-sm mt-2">Check back soon for the latest global macro news.</p>
+          <p>최신 기사를 불러오는 중입니다.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {articles.map((a: any) => (
-            <ArticleCard key={a.id} id={a.id} title={a.title} is_premium={a.is_premium} published_at={a.published_at} raw_url={a.raw_url} content={a.content}/>
+            <ArticleCard key={a.id} id={a.id} slug={a.slug} title={a.title_ko || a.title} is_premium={false} published_at={a.published_at} raw_url={a.raw_url} content={a.content_ko || a.content}/>
           ))}
         </div>
       )}
