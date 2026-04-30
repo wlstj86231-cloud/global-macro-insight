@@ -1,7 +1,5 @@
 "use server";
-
 import { getSupabaseAdmin } from "@/lib/supabase-server";
-
 export async function getArticleById(id: number) {
   try {
     const { data, error } = await getSupabaseAdmin()
@@ -9,7 +7,10 @@ export async function getArticleById(id: number) {
       .select("*")
       .eq("id", id)
       .single();
-    if (error) { return null; }
+    if (error) { console.error("getArticleById:", error); return null; }
     return data;
-  } catch (err) { return null; }
+  } catch (e) {
+    console.error("getArticleById exception:", e);
+    return null;
+  }
 }
