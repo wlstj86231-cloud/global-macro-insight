@@ -1,9 +1,24 @@
-import { MetadataRoute } from "next";
 import { getSupabaseAdmin } from "@/lib/supabase-server";
-export default async function sitemap():Promise<MetadataRoute.Sitemap> {
-  const SITE_URL=process.env.NEXT_PUBLIC_SITE_URL||"https://your-domain.com";
-  let entries:MetadataRoute.Sitemap=[];
-  try{const {data}=await getSupabaseAdmin().from("articles").select("id,published_at").eq("is_premium",false).limit(100);
-  if(data) entries=data.map(a=>({url:`${SITE_URL}/article/${a.id}`,lastModified:a.published_at?new Date(a.published_at):new Date()}));}catch{}
-  return [{url:SITE_URL,lastModified:new Date(),changeFrequency:"hourly",priority:1},...entries];
+import type { MetadataRoute } from "next";
+const BASE = "https://global-macro-insight.vercel.app";
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  let articles: any[] = [];
+  try {
+    const { data } = await getSupabaseAdmin()
+      .from("articles").select("slug,published_at")
+      .not("slug","is",null)
+      .order("published_at", { ascending: false });
+    articles = data || [];
+  } catch {}
+  const staticPages: MetadataRoute.Sitemap = [
+    { url: BASE, lastModified: new Date(), changeFrequency: "hourly", priority: 1 },
+    { url: `${BASE}/about`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.6 },
+  ];
+  const articlePages: MetadataRoute.Sitemap = articles.map(a => ({
+    url: `${BASE}/article/${a.slug}`,
+    lastModified: a.published_at ? new Date(a.published_at) : new Date(),
+    changeFrequency: "weekly" as const,
+    priority: 0.9,
+  }));
+  return [...staticPages, ...articlePages];
 }
