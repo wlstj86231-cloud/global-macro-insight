@@ -10,7 +10,10 @@ export const metadata: Metadata = {
   keywords: ["글로벌매크로","해외경제뉴스","금리","환율","주식시장","연준","한국은행","Bloomberg한국어","WSJ한국어","경제분석","매크로경제","투자뉴스"],
   metadataBase: new URL(BASE),
   alternates: { canonical: BASE, languages: { "ko-KR": BASE } },
-  verification: { google: "wE38nSs4SiRUNan8lHgfYSe-arQ3QNFBpyZ1yit3D88" },
+  verification: {
+    google: "wE38nSs4SiRUNan8lHgfYSe-arQ3QNFBpyZ1yit3D88",
+    other: { "naver-site-verification": "58fd59b828e737485731b9002acfe0a2f8c83593" },
+  },
   openGraph: { type: "website", locale: "ko_KR", url: BASE, siteName: "글로벌매크로", title: "글로벌매크로 | 해외 경제 뉴스 한국어 번역", description: "세계 주요 경제 뉴스를 한국어로 빠르게 전달합니다." },
   twitter: { card: "summary_large_image", title: "글로벌매크로", description: "해외 경제 뉴스 한국어 번역 서비스" },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 } },
